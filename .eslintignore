@@ -1,0 +1,10 @@
+node_modules/**
+package.json
+yarn.lock
+ios/**
+android/**
+assets/**
+scripts/**
+.vscode
+.expo-shared
+.prettirrc
