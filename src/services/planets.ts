@@ -14,7 +14,9 @@ export interface Planet {
 // Define a service using a base URL and expected endpoints
 export const planetsApi = createApi({
   reducerPath: 'planetApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://galileo-server-s3ir.onrender.com/'
+  }),
   endpoints: builder => ({
     getPlanets: builder.query<Planet[], void>({
       query: () => 'planets'

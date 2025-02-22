@@ -63,12 +63,6 @@ export default function PlanetDetail() {
           value={moons}
           iconColor={iconColor}
         />
-        <DetailRow
-          icon='moon.fill'
-          label='Number of Moons:'
-          value={moons}
-          iconColor={iconColor}
-        />
       </>
     )
   }
