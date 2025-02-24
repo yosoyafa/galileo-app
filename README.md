@@ -1,50 +1,85 @@
-# Welcome to your Expo app 👋
+# Galileo App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Welcome to the Galileo App! This project is an Expo-based React Native application that allows users to explore planets in our solar system. The app features a list of planets, detailed views for each planet, and the ability to mark planets as favorites.
 
-## Get started
+## Table of Contents
 
-1. Install dependencies
+- Getting Started
+- Running the App
+- Project Structure
+- Architecture
+- Technologies Used
 
-   ```bash
-   npm install
+## Getting Started
+
+To get started with the Galileo App, follow these steps:
+
+1. **Clone the repository:**
+
+   ```sh
+   git clone https://github.com/your-username/galileo-app.git
+   cd galileo-app
    ```
 
-2. Start the app
+2. **Install dependencies:**
 
-   ```bash
-    npx expo start
+    ```sh
+   yarn install
    ```
 
-In the output, you'll find options to open the app in a
+3. **Start the app:**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+    ```sh
+   yarn start
+   ```
+   This command will start the Expo development server. You can then open the app in an iOS simulator, Android emulator, or on a physical device using the Expo Go app.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Running the App
 
-## Get a fresh project
+To run the app on different platforms, use the following commands:
 
-When you're ready, run:
+- iOS:
+   ```sh
+   yarn ios
+   ```
 
-```bash
-npm run reset-project
-```
+- Android:
+   ```sh
+   yarn ios
+   ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Architecture
+The Galileo App follows a modular architecture with the following key components:
 
-## Learn more
+1. App Directory:
 
-To learn more about developing your project with Expo, look at the following resources:
+-Contains the main application screens and layouts.
+-Uses file-based routing with Expo Router.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+2. Components Directory:
 
-## Join the community
+- Contains reusable UI components and core components.
+- UI components include themed text, views, icons, and more.
 
-Join our community of developers creating universal apps.
+3. Constants Directory:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- Contains application-wide constants such as colors.
+
+4. Hooks Directory:
+
+- Contains custom hooks for theme management and other functionalities.
+
+5. Services Directory:
+
+- Contains API service definitions using Redux Toolkit Query.
+
+6. Store Directory:
+
+- Contains Redux store configuration, slices, and selectors.
+- Uses redux-persist for persisting user preferences.
+
+## Technologies Used
+- React Native: For building the mobile application.
+- Expo: For development and build tools, and routing (expo-router).
+- Redux Toolkit: For state management.
+- Redux Persist: For persisting Redux state.

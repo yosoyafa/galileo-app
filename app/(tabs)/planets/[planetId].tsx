@@ -16,6 +16,7 @@ import { addToFavorites, removeFromFavorites } from '@store/userPreferences/slic
 import { selectFavoritePlanets } from '@store/userPreferences/selectors'
 import { useThemeColor } from '@hooks/useThemeColor'
 import { useMemo } from 'react'
+import { Button } from '@components/ui/Button'
 
 export default function PlanetDetail() {
   const { planetId } = useLocalSearchParams()
@@ -48,9 +49,7 @@ export default function PlanetDetail() {
     return (
       <View style={styles.errorContainer}>
         <ThemedText type='default'>Error loading planet details.</ThemedText>
-        <TouchableOpacity style={styles.retryButton} onPress={refetch}>
-          <ThemedText type='defaultSemiBold'>Retry</ThemedText>
-        </TouchableOpacity>
+        <Button label='Retry' onPress={refetch} />
         <Link href='/'>
           <ThemedText type='link'>Go explore some planets!</ThemedText>
         </Link>

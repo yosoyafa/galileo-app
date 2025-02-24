@@ -29,11 +29,17 @@ export default function Favorites() {
         <FlatList
           data={favoritePlanets}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item: { name, picture, id } }) => (
+          renderItem={({
+            item: {
+              name,
+              pictures: { icon },
+              id
+            }
+          }) => (
             <PlanetCard
               onPress={() => router.navigate(`/planets/${id}`)}
               name={name}
-              picture={picture}
+              picture={icon}
               rightDecorator={
                 <TouchableOpacity
                   onPress={() => {

@@ -4,7 +4,9 @@ import {
   SafeAreaView,
   FlatList,
   StyleSheet,
-  RefreshControl
+  RefreshControl,
+  ActivityIndicator,
+  TouchableOpacity
 } from 'react-native'
 import { ThemedText } from '@components/ui/ThemedText'
 import { IconSymbol } from '@/components/ui/IconSymbol'
@@ -13,6 +15,7 @@ import { Planet, useGetPlanetsQuery } from '@services/planets'
 import { PlanetCard } from '@components/core/PlanetCard'
 import { SearchBar } from '@components/ui/SearchBar'
 import { useThemeColor } from '@hooks/useThemeColor'
+import { Button } from '@components/ui/Button'
 
 export default function HomeScreen() {
   const { data: planets, isLoading, error, refetch } = useGetPlanetsQuery()
@@ -38,12 +41,11 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (!planets) return
-    let sortedPlanets = [...planets]
-    if (order === 'asc') {
-      sortedPlanets.sort((a, b) => a.name.localeCompare(b.name))
-    } else if (order === 'desc') {
-      sortedPlanets.sort((a, b) => b.name.localeCompare(a.name))
-    }
+    const sortedPlanets = [...planets].sort((a, b) => {
+      if (order === 'asc') return a.name.localeCompare(b.name)
+      if (order === 'desc') return b.name.localeCompare(a.name)
+      return 0
+    })
     setFilteredPlanets(sortedPlanets)
   }, [order, planets])
 
@@ -52,28 +54,29 @@ export default function HomeScreen() {
     refetch().then(() => setRefreshing(false))
   }, [refetch])
 
-  const renderLoadingOrError = (message: string) => (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <ThemedText type='title'>Galileo</ThemedText>
-          <IconSymbol name='globe.americas.fill' size={28} color={iconColor} />
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size='large' color={iconColor} />
+          <ThemedText style={styles.loadingText}>
+            Loading Planet Details...
+          </ThemedText>
         </View>
-        <ThemedText>{message}</ThemedText>
-      </View>
-    </SafeAreaView>
-  )
+      )
+    }
 
-  if (isLoading && !planets) return renderLoadingOrError('Loading...')
-  if (error && !planets) return renderLoadingOrError('Failed to load planets')
-
-  return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <ThemedText type='title'>Galileo</ThemedText>
-          <IconSymbol name='globe.americas.fill' size={28} color={iconColor} />
+    if (error) {
+      return (
+        <View style={styles.errorContainer}>
+          <ThemedText type='default'>Error loading planet details.</ThemedText>
+          <Button label='Retry' onPress={refetch} />
         </View>
+      )
+    }
+
+    return (
+      <>
         <SearchBar
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -103,6 +106,18 @@ export default function HomeScreen() {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
+      </>
+    )
+  }
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <ThemedText type='title'>Galileo</ThemedText>
+          <IconSymbol name='globe.americas.fill' size={28} color={iconColor} />
+        </View>
+        {renderContent()}
       </View>
     </SafeAreaView>
   )
@@ -124,5 +139,25 @@ const styles = StyleSheet.create({
     gap: 16,
     paddingBottom: 64
   },
-  flatList: { flex: 1 }
+  flatList: { flex: 1 },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    marginTop: 10
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    gap: 16
+  },
+  retryButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 5
+  }
 })
