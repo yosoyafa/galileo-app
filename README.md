@@ -17,7 +17,7 @@ To get started with the Galileo App, follow these steps:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/your-username/galileo-app.git
+   git clone https://github.com/cookincurry/galileo-app.git
    cd galileo-app
    ```
 
@@ -53,8 +53,8 @@ The Galileo App follows a modular architecture with the following key components
 
 1. App Directory:
 
--Contains the main application screens and layouts.
--Uses file-based routing with Expo Router.
+- Contains the main application screens and layouts.
+- Uses file-based routing with Expo Router.
 
 2. Components Directory:
 
