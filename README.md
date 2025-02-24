@@ -1,6 +1,9 @@
 # Galileo App
 
 Welcome to the Galileo App! This project is an Expo-based React Native application that allows users to explore planets in our solar system. The app features a list of planets, detailed views for each planet, and the ability to mark planets as favorites.
+Galileo API Server can be found in a separate repo.
+
+https://github.com/user-attachments/assets/2fd3635b-a603-4135-9c42-93e8aeba5246
 
 ## Table of Contents
 
