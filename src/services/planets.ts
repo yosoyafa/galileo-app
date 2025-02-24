@@ -3,7 +3,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export interface Planet {
   id: number
   name: string
-  picture: string
+  pictures: {
+    icon: string
+    header: string
+  }
   mass: string
   diameter: string
   orbitalPeriod: string

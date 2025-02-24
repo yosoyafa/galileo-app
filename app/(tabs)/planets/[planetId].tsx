@@ -1,5 +1,11 @@
-import { Image, TouchableOpacity, View, StyleSheet } from 'react-native'
-import { router, useLocalSearchParams } from 'expo-router'
+import {
+  Image,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native'
+import { Link, router, useLocalSearchParams } from 'expo-router'
 import ParallaxScrollView from '@components/ui/ParallaxScrollView'
 import { ThemedText } from '@components/ui/ThemedText'
 import { ThemedView } from '@components/ui/ThemedView'
@@ -17,18 +23,57 @@ export default function PlanetDetail() {
   const backgroundColor = useThemeColor({}, 'background')
   const favoritePlanets = useAppSelector(selectFavoritePlanets)
   const dispatch = useAppDispatch()
-  const { data: planet, isLoading } = useGetPlanetByIdQuery(planetId as string)
+  const {
+    data: planet,
+    isLoading,
+    error,
+    refetch
+  } = useGetPlanetByIdQuery(planetId as string)
 
   const isFavorite = useMemo(
     () => planet?.id !== undefined && !!favoritePlanets[planet.id],
     [favoritePlanets, planet?.id]
   )
 
-  const renderPlanetDetails = (planet: Planet) => {
-    const { name, description, mass, diameter, orbitalPeriod, moons, id } = planet
-
+  if (isLoading) {
     return (
-      <>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color={iconColor} />
+        <ThemedText style={styles.loadingText}>Loading Planet Details...</ThemedText>
+      </View>
+    )
+  }
+
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <ThemedText type='default'>Error loading planet details.</ThemedText>
+        <TouchableOpacity style={styles.retryButton} onPress={refetch}>
+          <ThemedText type='defaultSemiBold'>Retry</ThemedText>
+        </TouchableOpacity>
+        <Link href='/'>
+          <ThemedText type='link'>Go explore some planets!</ThemedText>
+        </Link>
+      </View>
+    )
+  }
+
+  if (!planet) return null
+
+  const { name, description, mass, diameter, orbitalPeriod, moons, id } = planet
+
+  return (
+    <>
+      <ParallaxScrollView
+        headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
+        headerImage={
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.headerImage}
+              source={{ uri: planet.pictures.header }}
+            />
+          </View>
+        }>
         <ThemedView style={styles.detailHeader}>
           <ThemedText type='title'>Explore {name}</ThemedText>
           <TouchableOpacity
@@ -63,27 +108,13 @@ export default function PlanetDetail() {
           value={moons}
           iconColor={iconColor}
         />
-      </>
-    )
-  }
-
-  if (!planet) return null
-
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <View style={styles.imageContainer}>
-          <TouchableOpacity
-            onPress={() => router.back()}
-            style={[styles.backButton, { backgroundColor }]}>
-            <IconSymbol name='arrow.backward' size={25} color={iconColor} />
-          </TouchableOpacity>
-          <Image style={styles.headerImage} source={{ uri: planet.picture }} />
-        </View>
-      }>
-      {renderPlanetDetails(planet)}
-    </ParallaxScrollView>
+      </ParallaxScrollView>
+      <TouchableOpacity
+        onPress={() => router.back()}
+        style={[styles.backButton, { backgroundColor }]}>
+        <IconSymbol name='arrow.backward' size={25} color={iconColor} />
+      </TouchableOpacity>
+    </>
   )
 }
 
@@ -129,5 +160,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    marginTop: 10
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    gap: 16
+  },
+  retryButton: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 5
   }
 })
