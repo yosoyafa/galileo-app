@@ -20,7 +20,7 @@ To get started with the Galileo App, follow these steps:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/cookincurry/galileo-app.git
+   git clone https://github.com/yosoyafa/galileo-app.git
    cd galileo-app
    ```
 
